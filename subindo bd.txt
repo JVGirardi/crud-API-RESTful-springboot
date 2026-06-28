@@ -1,0 +1,15 @@
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+sudo service postgresql start
+sudo -u postgres psql
+ALTER USER postgres PASSWORD 'sua_senha';
+\q
+
+commandos úteis
+sudo service NOME_DA_DB stop/start/restart/status
+
+
+melhorias:
+
+customizacao de mensagem, customizacoes de erros, inserir um custom validation,
+configurar o exception handler.
