@@ -13,3 +13,9 @@ melhorias:
 
 customizacao de mensagem, customizacoes de erros, inserir um custom validation,
 configurar o exception handler.
+
+incluir paginacao nos métodos de listagem de todos os produtos
+incluir filtros para deixar a listagem mais dinâmica
+inserir customizacoes de erros
+inserir camada service conforme forem surgindo regras de negócios
+colocar a camada service e criar os beans do tipo @service

@@ -16,12 +16,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Controller
+@ResponseBody
+// STATELESS -> (token) a cada nova requisicao eu recebo todas as informacoes necessarias para fazer aquela funcionalidade que o client esta pedindo
+// STATEFULL -> o estado de cada client eh mantido no servidor
+//anotacao @restcontroller eh a juncao dos decorators controller e responseBody
 @RestController
+//@RequestMapping("/products") --> defino este endpoint global para td classe (n precisaria colocar /products nos metodos no mapping)
 public class ProductController {
 
-    @Autowired
-    ProductRepository productRepository;
+    @Autowired //indica para o sb a injecao de ProductRepository
+    private ProductRepository productRepository;
 
     @PostMapping("/products")
     public ResponseEntity<ProductModel> saveProduct(@RequestBody @Valid ProductRecordDto productRecordDto) {
@@ -32,15 +40,45 @@ public class ProductController {
 
     @GetMapping("/products")
     public ResponseEntity<List<ProductModel>> getAllProducts() {
-        return ResponseEntity.status(HttpStatus.OK).body(productRepository.findAll());
+        List<ProductModel> productModelList = productRepository.findAll();
+        if (!productModelList.isEmpty()) {
+            for (ProductModel product : productModelList) {
+                UUID id = product.getIdProduct();
+                product.add(linkTo(methodOn(ProductController.class).getOneProduct(id)).withSelfRel());
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(productModelList);
     }
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<Object> getOneProduct(@PathVariable(value="id") UUID id) {
+    public ResponseEntity<Object> getOneProduct(@PathVariable("id") UUID id) {
         Optional<ProductModel> product = productRepository.findById(id);
         if (product.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
         }
+        product.get().add(linkTo(methodOn(ProductController.class).getAllProducts()).withRel("Products List"));
         return ResponseEntity.status(HttpStatus.OK).body(product.get());
+    }
+
+    @PutMapping("/products/{id}")
+    public ResponseEntity<Object> updateProduct(@PathVariable("id") UUID id,
+                                                @RequestBody @Valid ProductRecordDto productRecordDto) {
+        Optional<ProductModel> product = productRepository.findById(id);
+        if( product.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        }
+        ProductModel productModel = product.get();
+        BeanUtils.copyProperties(productRecordDto, productModel);
+        return ResponseEntity.status(HttpStatus.OK).body(productRepository.save(productModel));
+    }
+
+    @DeleteMapping("products/{id}")
+    public ResponseEntity<Object> deleteProduct(@PathVariable("id") UUID id) {
+        Optional<ProductModel> product = productRepository.findById(id);
+        if (product.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        }
+        productRepository.delete(product.get());
+        return ResponseEntity.status(HttpStatus.OK).body("Product deleted successfully.");
     }
 }

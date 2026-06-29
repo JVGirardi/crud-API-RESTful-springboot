@@ -1,0 +1,27 @@
+As classes de configuracao são utilizadas no spring para definir beans e instancias de classe
+no contexto de uma aplicacao spring.
+
+O spring consegue fazer o gerenciamento das classes que são componentes do spring (que foram mapeadas com as anotacoes)
+as vezes eh necessário fazer injecao de uma dependência de uma classe externa que veio de outra biblioteca
+(que nao está dentro do spring)
+
+desta forma se eu usar o @Autowired o spring n vai saber mapear qual classe é esse que estou pedindo para
+que ele faca a injecao de dependência
+aí entra a classe com @Configuration, indicando que o spring deve usar esta classe como base para configuracoes
+
+normalmente dentro desta classe eu defino métodos públicos que retornam o tipo da classe que qro configurar
+e decoro com @Bean
+
+a anotacao @Bean eh usada dentro das classes que tem a anotacao de @Configuration pra indicar para o
+spring que ele deve gerenciar o retorno deste metodo como um bean no contexto da minha aplicacao
+
+basicamente a funcao dos beans eh criar instancia de classes dentro da minha aplicacao que nao podem ser gerenciados
+pelo spring (classes que vem de libs de terceiros ou quando preciso de um controle específico sobre a implementação
+desta classe)
+
+quando o spring for analisar esta classe de @Configuration
+ele mapeia tds métodos que tem @Bean
+
+por padrao as instancias geradas com @Bean são do escopo Singleton
+uma vez gerada uma instancia deste Bean ela eh injetada para toda aplicacao (Todas as classes que pedirem o car)
+tem como alterar este comportamento, porém ele eh o padrão do spring
