@@ -1,19 +1,17 @@
 package com.example.springboot.models;
 
+import com.example.springboot.repositories.ProductRepository;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Setter
-@Getter
-@NoArgsConstructor
+@Setter @Getter @NoArgsConstructor @AllArgsConstructor
 @Entity
 @Table(name = "PRODUCTS")
 public class ProductModel extends RepresentationModel<ProductModel> implements Serializable   {
@@ -25,4 +23,8 @@ public class ProductModel extends RepresentationModel<ProductModel> implements S
     private UUID idProduct;
     private String name;
     private BigDecimal value;
+    private LocalDateTime manufacturingDate;
+    private LocalDateTime expirationDate;
+    @Enumerated(EnumType.STRING)
+    private ProductTypeEnum productType;
 }
