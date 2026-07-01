@@ -3,6 +3,7 @@ package com.example.springboot.models;
 import com.example.springboot.repositories.ProductRepository;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
@@ -13,8 +14,8 @@ import java.util.UUID;
 
 @Setter @Getter @NoArgsConstructor @AllArgsConstructor
 @Entity
-@Table(name = "PRODUCTS")
-public class ProductModel extends RepresentationModel<ProductModel> implements Serializable   {
+@Table(name = "products")
+public class ProductModel implements Serializable   {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -25,6 +26,11 @@ public class ProductModel extends RepresentationModel<ProductModel> implements S
     private BigDecimal value;
     private LocalDateTime manufacturingDate;
     private LocalDateTime expirationDate;
+
     @Enumerated(EnumType.STRING)
     private ProductTypeEnum productType;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime timeStamp;
 }

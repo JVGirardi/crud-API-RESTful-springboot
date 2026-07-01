@@ -1,0 +1,4 @@
+Anotações relevantes sobre conhecimentos adquiridos durante o CRUD:
+
+o application.properties nos resources eh o arquivo de configuracao da aplicacao.
+Nele configuro o bd, etc.
