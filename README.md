@@ -1,7 +1,7 @@
 <!--- # "Can be a image or a gift from the project pages" -->
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/JVGirardi/crud-API-RESTful-springboot/643159f7ca3fae21628a86a42b6f9d4eb5e649ac/src/main/java/com/example/springboot/Screenshot%202026-07-02%20010230.png?token=GHSAT0AAAAAADWZCDCWNNR6MRR6PN6EZ2JE2SF6N6Q" alt="Product API">
+  <img src="https://github.com/JVGirardi/crud-API-RESTful-springboot/blob/main/src/main/java/com/example/springboot/Screenshot%202026-07-02%20010230.png" alt="Product API">
 </p>
 
 # Product Management API (CRUD Spring Boot)
